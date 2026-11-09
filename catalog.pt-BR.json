@@ -151,7 +151,7 @@
       "version": "1.0.0",
       "path": "tools/sync-skills.sh",
       "entryFile": "tools/sync-skills.sh",
-      "sha256": "90b89e30f14da139b3abfa2d251761e086f6879a592c4d8da4e9e28e57ea395b",
+      "sha256": "c23703c8f04fe1331e4bf2ce21af2a730a9f9fc94699326b2f94ea0a66af697b",
       "description": "Script idempotente de sincronização de links simbólicos multiplataforma para Claude Code, Cursor, Codex e Antigravity.",
       "compatibility": [
         "bash",
@@ -166,8 +166,8 @@
       "version": "1.0.0",
       "path": "tools/build-agents.sh",
       "entryFile": "tools/build-agents.sh",
-      "sha256": "02a4a11e51e1fabcbbbf2ee4d0ca113accc377a476bed11fa4fb220c2120a1dc",
-      "description": "Compilador de personas para traduzir definições canônicas do Cursor para manifests do Claude Code com listas de ferramentas permitidas.",
+      "sha256": "a48981e72e479fd0169a6815ec8b26260e8f8a694028157fc1b80c5bcc60515d",
+      "description": "Sincroniza e compila subagentes canônicos para Cursor, Claude Code, OpenAI Codex e Google Antigravity.",
       "compatibility": [
         "bash",
         "posix"
@@ -195,7 +195,7 @@
       "version": "1.0.0",
       "path": "tools/sync-skills.ps1",
       "entryFile": "tools/sync-skills.ps1",
-      "sha256": "8192f8c3497aabc2800cc37c264fcdad4bc8ff787dc3fbb560e15fcf5b9120f4",
+      "sha256": "05b612394066fe99b7e6becb710b6bc767065184321c0ef22fbd7876375c8f52",
       "description": "Script em Windows PowerShell para sincronização de skills multiplataforma utilizando links simbólicos ou junções NTFS sem privilégios elevados.",
       "compatibility": [
         "powershell",
@@ -210,8 +210,8 @@
       "version": "1.0.0",
       "path": "tools/build-agents.ps1",
       "entryFile": "tools/build-agents.ps1",
-      "sha256": "8dc1d35672bb2d6c2a731764249d241ac5d128e804a445e2b06eb7faf27463c0",
-      "description": "Compilador em Windows PowerShell para traduzir personas canônicas de subagentes para Cursor e Claude Code.",
+      "sha256": "60b40aefd7c33d6dd56c3ecb1aad266fe2736dd381c1f9759bfdd92cf11e98dc",
+      "description": "Script em Windows PowerShell para sincronizar e compilar subagentes para Cursor, Claude Code, OpenAI Codex e Google Antigravity.",
       "compatibility": [
         "powershell",
         "windows"

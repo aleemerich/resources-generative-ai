@@ -97,8 +97,8 @@ Por favor, execute as seguintes etapas:
      https://raw.githubusercontent.com/aleemerich/resources-generative-ai/main/catalog.json
      e baixe os arquivos necessários a partir de `https://raw.githubusercontent.com/aleemerich/resources-generative-ai/main/`.
 3. Crie os links simbólicos das skills estáveis para o diretório de descoberta do meu ambiente:
-   - No Windows (PowerShell): execute `.\tools\sync-skills.ps1` (e `.\tools\build-agents.ps1` para Cursor / Claude Code).
-   - No Linux / macOS / Git Bash: execute `./tools/sync-skills.sh` (e `./tools/build-agents.sh` para Cursor / Claude Code).
+   - No Windows (PowerShell): execute `.\tools\sync-skills.ps1` (e `.\tools\build-agents.ps1` para subagentes).
+   - No Linux / macOS / Git Bash: execute `./tools/sync-skills.sh` (e `./tools/build-agents.sh` para subagentes).
    - Caso esteja em ambiente sem terminal, salve os arquivos baixados diretamente na pasta de skills do meu ambiente.
 4. Informe exatamente quais skills e agentes foram instalados, suas respectivas versões do catalog.json e se é necessário reiniciar a sessão do assistente.
 ```

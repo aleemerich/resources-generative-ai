@@ -78,7 +78,19 @@ foreach ($target in $Targets) {
     $clientName = "antigravity-ide"
   }
 
+  $baseDir = Split-Path $target -Parent
+  if ($target -match "\.gemini[\\/]config") {
+    $baseDir = Join-Path $UserProfile ".gemini\config"
+  } elseif ($target -match "\.gemini[\\/]antigravity") {
+    $baseDir = Join-Path $UserProfile ".gemini\antigravity"
+  }
+
   Write-Host "Target environment: $clientName ($target)"
+
+  if ((-not (Test-Path $baseDir)) -and (-not (Test-Path $target)) -and (-not $Force)) {
+    Write-Host "  [SKIPPED] Environment not found ($baseDir does not exist)`n"
+    continue
+  }
 
   if ($Check) {
     if (-not (Test-Path $target)) {

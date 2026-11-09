@@ -79,14 +79,22 @@ for target in "${TARGETS[@]}"; do
   matched_any=1
 
   client_name="$(basename "$(dirname "$target")")"
+  base_dir="$(dirname "$target")"
   if [[ "$target" == *".gemini/config"* ]]; then
     client_name="antigravity-config"
+    base_dir="${HOME}/.gemini/config"
   elif [[ "$target" == *".gemini/antigravity"* ]]; then
     client_name="antigravity-ide"
+    base_dir="${HOME}/.gemini/antigravity"
   fi
 
   echo
   echo "Target environment: $client_name ($target)"
+
+  if [[ ! -d "$base_dir" && ! -d "$target" && $DO_FORCE -eq 0 ]]; then
+    echo "  [SKIPPED] Environment not found ($base_dir does not exist)"
+    continue
+  fi
 
   if [[ $DO_CHECK -eq 1 ]]; then
     if [[ ! -d "$target" ]]; then

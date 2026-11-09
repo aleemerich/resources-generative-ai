@@ -151,7 +151,7 @@
       "version": "1.0.0",
       "path": "tools/sync-skills.sh",
       "entryFile": "tools/sync-skills.sh",
-      "sha256": "90b89e30f14da139b3abfa2d251761e086f6879a592c4d8da4e9e28e57ea395b",
+      "sha256": "c23703c8f04fe1331e4bf2ce21af2a730a9f9fc94699326b2f94ea0a66af697b",
       "description": "Idempotent multi-platform symlink synchronization script for Claude Code, Cursor, Codex, and Antigravity.",
       "compatibility": [
         "bash",
@@ -166,8 +166,8 @@
       "version": "1.0.0",
       "path": "tools/build-agents.sh",
       "entryFile": "tools/build-agents.sh",
-      "sha256": "02a4a11e51e1fabcbbbf2ee4d0ca113accc377a476bed11fa4fb220c2120a1dc",
-      "description": "Compiler translating canonical Cursor agent frontmatter definitions to Claude Code subagent manifests with tool allowlists.",
+      "sha256": "a48981e72e479fd0169a6815ec8b26260e8f8a694028157fc1b80c5bcc60515d",
+      "description": "Synchronizes and compiles canonical subagents for Cursor, Claude Code, OpenAI Codex, and Google Antigravity.",
       "compatibility": [
         "bash",
         "posix"
@@ -195,7 +195,7 @@
       "version": "1.0.0",
       "path": "tools/sync-skills.ps1",
       "entryFile": "tools/sync-skills.ps1",
-      "sha256": "8192f8c3497aabc2800cc37c264fcdad4bc8ff787dc3fbb560e15fcf5b9120f4",
+      "sha256": "05b612394066fe99b7e6becb710b6bc767065184321c0ef22fbd7876375c8f52",
       "description": "Windows PowerShell multi-platform synchronization script using symbolic links or junctions.",
       "compatibility": [
         "powershell",
@@ -210,8 +210,8 @@
       "version": "1.0.0",
       "path": "tools/build-agents.ps1",
       "entryFile": "tools/build-agents.ps1",
-      "sha256": "8dc1d35672bb2d6c2a731764249d241ac5d128e804a445e2b06eb7faf27463c0",
-      "description": "Windows PowerShell compiler translating canonical agent definitions for Cursor and Claude Code.",
+      "sha256": "60b40aefd7c33d6dd56c3ecb1aad266fe2736dd381c1f9759bfdd92cf11e98dc",
+      "description": "Windows PowerShell tool synchronizing and compiling subagents for Cursor, Claude Code, OpenAI Codex, and Google Antigravity.",
       "compatibility": [
         "powershell",
         "windows"

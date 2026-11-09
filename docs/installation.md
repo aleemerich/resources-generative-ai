@@ -97,8 +97,8 @@ Please perform the following steps:
      https://raw.githubusercontent.com/aleemerich/resources-generative-ai/main/catalog.json
      and download the required files relative to `https://raw.githubusercontent.com/aleemerich/resources-generative-ai/main/`.
 3. Link the stable skills and agents to my environment's discovery directory:
-   - On Windows (PowerShell): run `.\tools\sync-skills.ps1` (and `.\tools\build-agents.ps1` for Cursor / Claude Code).
-   - On Linux / macOS / Git Bash: run `./tools/sync-skills.sh` (and `./tools/build-agents.sh` for Cursor / Claude Code).
+   - On Windows (PowerShell): run `.\tools\sync-skills.ps1` (and `.\tools\build-agents.ps1` for subagents).
+   - On Linux / macOS / Git Bash: run `./tools/sync-skills.sh` (and `./tools/build-agents.sh` for subagents).
    - If shell-restricted, place the downloaded skills directly into my environment's discovery path.
 4. Report the exact skills and agents installed, their versions from catalog.json, and whether a session restart is required.
 ```

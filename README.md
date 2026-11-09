@@ -92,8 +92,8 @@ Copy and paste this prompt to your AI coding assistant (Claude Code, Cursor, Cod
 > 1. Detect my current AI assistant environment (Claude Code, Cursor, Codex, or Antigravity) and operating system.
 > 2. Clone this repository to `~/.local/share/resources-generative-ai` (or run `git pull` if it already exists).
 > 3. Run the synchronization tools for my platform:
->    - On Windows (PowerShell): run `.\tools\sync-skills.ps1` (and `.\tools\build-agents.ps1` for Cursor / Claude Code).
->    - On Linux / macOS / Git Bash: run `./tools/sync-skills.sh` (and `./tools/build-agents.sh` for Cursor / Claude Code).
+>    - On Windows (PowerShell): run `.\tools\sync-skills.ps1` (and `.\tools\build-agents.ps1` for subagents).
+>    - On Linux / macOS / Git Bash: run `./tools/sync-skills.sh` (and `./tools/build-agents.sh` for subagents).
 >    - If in a restricted environment without shell access, read `catalog.json` and download each skill file from `https://raw.githubusercontent.com/aleemerich/resources-generative-ai/main/<entryFile>` into my environment's discovery directory.
 > 4. Report which skills and agents were installed, their versions from `catalog.json`, and whether a session reload is needed."
 

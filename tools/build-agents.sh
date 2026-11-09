@@ -1,42 +1,47 @@
 #!/usr/bin/env bash
-# Publishes and compiles task force subagents for Cursor and Claude Code.
+# Synchronizes and compiles task force subagents for supported AI environments:
+# Cursor, Claude Code, OpenAI Codex, and Google Antigravity.
 #
-# The .md files in stable/agents/ are the canonical definitions, written in Cursor's
-# frontmatter dialect. Cursor consumes them through symlinks. Claude Code requires
-# different frontmatter fields and a tool allowlist for read-only agents, so its
-# copies are compiled automatically.
-#
-# Claude Code freezes its agent registry at boot. After running this script,
-# restart Claude Code to load newly compiled agents.
+# Inspects client discovery paths. If a client environment exists, synchronizes
+# all subagents; otherwise, reports as skipped and continues to the next client.
 #
 # Field mapping applied for Claude Code:
 #   model: claude-opus-5[effort=high]  ->  model: opus   + effort: high
 #   model: gpt-5.6-sol-max             ->  model: sonnet + effort: high
 #   readonly: true                     ->  tools: Read, Grep, Glob
 #
-# Why the readonly mapping is an allowlist and not a denylist:
-# Cursor's `readonly: true` enforces a sandbox property. Claude Code relies on tool lists.
-# Simply disallowing write tools leaves Bash active, which could write files via sed or echo.
-# The allowlist (Read, Grep, Glob) ensures read-only guarantees.
+# Claude Code freezes its agent registry at boot. After compiling, restart Claude Code.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 SRC="${AGENT_SRC_DIR:-${REPO_ROOT}/stable/agents}"
-CURSOR_DIR="${CURSOR_AGENTS_DIR:-${HOME}/.cursor/agents}"
-CLAUDE_DIR="${CLAUDE_AGENTS_DIR:-${HOME}/.claude/agents}"
 
 DO_FORCE=0
+FILTER_CLIENT=""
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --force)
       DO_FORCE=1
       shift
       ;;
+    --client)
+      FILTER_CLIENT="$2"
+      case "$FILTER_CLIENT" in
+        claude|cursor|codex|antigravity|gemini)
+          ;;
+        *)
+          echo "Error: Unknown client '$FILTER_CLIENT'. Supported clients: claude, cursor, codex, antigravity" >&2
+          exit 1
+          ;;
+      esac
+      shift 2
+      ;;
     *)
       echo "Unknown flag: $1" >&2
-      echo "Usage: $0 [--force]" >&2
+      echo "Usage: $0 [--force] [--client <claude|cursor|codex|antigravity>]" >&2
       exit 1
       ;;
   esac
@@ -47,88 +52,168 @@ if [[ ! -d "$SRC" ]]; then
   exit 1
 fi
 
-mkdir -p "$CURSOR_DIR" "$CLAUDE_DIR"
-
 tmpfile=""
 trap '[[ -n "$tmpfile" && -f "$tmpfile" ]] && rm -f "$tmpfile"' EXIT
 
 shopt -s nullglob
-found=0
+agents=("$SRC"/*.md)
 
-for src in "$SRC"/*.md; do
-  found=1
-  name="$(basename "$src")"
-
-  # 1. Cursor: symlink canonical definition with safety checks
-  link="${CURSOR_DIR}/${name}"
-  if [[ -L "$link" ]]; then
-    cur_target="$(readlink "$link" 2>/dev/null || true)"
-    if [[ "$cur_target" == "$src" ]]; then
-      echo "up-to-date (Cursor): $link"
-    elif [[ $DO_FORCE -eq 1 ]]; then
-      rm -f "$link"
-      ln -s "$src" "$link"
-      echo "linked (Cursor): $link"
-    else
-      echo "skip (symlink points to $cur_target, use --force): $link"
-    fi
-  elif [[ -e "$link" ]]; then
-    if [[ $DO_FORCE -eq 1 ]]; then
-      rm -f "$link"
-      ln -s "$src" "$link"
-      echo "linked (Cursor): $link"
-    else
-      echo "skip (regular file exists, use --force): $link"
-    fi
-  else
-    ln -s "$src" "$link"
-    echo "linked (Cursor): $link"
-  fi
-
-  # 2. Claude Code: compile frontmatter and tool allowlist safely
-  dest="${CLAUDE_DIR}/${name}"
-  if [[ -L "$dest" ]]; then
-    # Destination is a symlink: never write through it!
-    if [[ $DO_FORCE -eq 1 ]]; then
-      rm -f "$dest"
-    else
-      echo "skip (Claude Code destination is a symlink, use --force): $dest"
-      continue
-    fi
-  elif [[ -e "$dest" && $DO_FORCE -eq 0 ]]; then
-    if ! grep -q "Managed by resources-generative-ai" "$dest" 2>/dev/null; then
-      echo "skip (existing unmanaged Claude Code agent, use --force): $dest"
-      continue
-    fi
-    rm -f "$dest"
-  fi
-
-  # Secure temporary file to prevent symlink following
-  tmpfile="$(mktemp "${CLAUDE_DIR}/.tmp_agent_XXXXXX")"
-
-  # Handle CRLF, map fields, and inject management marker on line 2 inside frontmatter
-  perl -pe '
-    s{\r?\n$}{};
-    if ($. == 1 && /^---$/) {
-      $_ = "---\n# Managed by resources-generative-ai";
-    }
-    s{^model:\s*claude-opus-5\[effort=high\]\s*$}{model: opus\neffort: high};
-    s{^model:\s*gpt-5\.6-sol-max\s*$}{model: sonnet\neffort: high};
-    s{^readonly:\s*true\s*$}{tools: Read, Grep, Glob};
-    s{\~/\.cursor/skills/}{\~/\.claude/skills/}g;
-    $_ .= "\n";
-  ' "$src" > "$tmpfile"
-
-  mv -f "$tmpfile" "$dest"
-  tmpfile=""
-  echo "compiled (Claude Code): $dest"
-done
-
-if [[ $found -eq 0 ]]; then
+if [[ ${#agents[@]} -eq 0 ]]; then
   echo "Error: No agent definitions found in $SRC" >&2
   exit 1
 fi
 
+echo "=== AI Subagents Synchronization ==="
+echo "Source: $SRC (${#agents[@]} subagents)"
 echo
-echo "Agents synchronized successfully."
-echo "Note: Claude Code freezes its agent registry at boot — restart your Claude Code session to load changes."
+
+sync_canonical_links() {
+  local target_dir="$1"
+  local label="$2"
+  local base_dir="$3"
+
+  if [[ ! -d "$base_dir" && ! -d "$target_dir" && $DO_FORCE -eq 0 ]]; then
+    echo "Target environment: $label ($target_dir)"
+    echo "  [SKIPPED] Environment not found ($base_dir does not exist)"
+    echo
+    return 0
+  fi
+
+  echo "Target environment: $label ($target_dir)"
+  mkdir -p "$target_dir"
+
+  for src in "${agents[@]}"; do
+    local name="$(basename "$src")"
+    local link="${target_dir}/${name}"
+
+    if [[ -L "$link" ]]; then
+      local cur_target="$(readlink "$link" 2>/dev/null || true)"
+      if [[ "$cur_target" == "$src" ]]; then
+        echo "  [UP-TO-DATE] $name"
+      elif [[ $DO_FORCE -eq 1 ]]; then
+        rm -f "$link"
+        ln -s "$src" "$link"
+        echo "  [LINKED] $name -> $link"
+      else
+        echo "  [SKIP] $name (symlink points to $cur_target, use --force)"
+      fi
+    elif [[ -e "$link" ]]; then
+      if [[ $DO_FORCE -eq 1 ]]; then
+        rm -f "$link"
+        ln -s "$src" "$link"
+        echo "  [LINKED] $name -> $link"
+      else
+        echo "  [SKIP] $name (regular file exists, use --force)"
+      fi
+    else
+      ln -s "$src" "$link"
+      echo "  [LINKED] $name -> $link"
+    fi
+  done
+  echo
+}
+
+sync_compiled_agents() {
+  local target_dir="$1"
+  local label="$2"
+  local base_dir="$3"
+  local skill_path_replace="$4"
+  local is_claude="$5"
+
+  if [[ ! -d "$base_dir" && ! -d "$target_dir" && $DO_FORCE -eq 0 ]]; then
+    echo "Target environment: $label ($target_dir)"
+    echo "  [SKIPPED] Environment not found ($base_dir does not exist)"
+    echo
+    return 0
+  fi
+
+  echo "Target environment: $label ($target_dir)"
+  mkdir -p "$target_dir"
+
+  for src in "${agents[@]}"; do
+    local name="$(basename "$src")"
+    local dest="${target_dir}/${name}"
+
+    if [[ -L "$dest" ]]; then
+      if [[ $DO_FORCE -eq 1 ]]; then
+        rm -f "$dest"
+      else
+        echo "  [SKIP] $name (destination is a symlink, use --force)"
+        continue
+      fi
+    elif [[ -e "$dest" && $DO_FORCE -eq 0 ]]; then
+      if ! grep -q "Managed by resources-generative-ai" "$dest" 2>/dev/null; then
+        echo "  [SKIP] $name (existing unmanaged agent, use --force)"
+        continue
+      fi
+      rm -f "$dest"
+    fi
+
+    tmpfile="$(mktemp "${target_dir}/.tmp_agent_XXXXXX")"
+
+    if [[ "$is_claude" == "1" ]]; then
+      perl -pe '
+        s{\r?\n$}{};
+        if ($. == 1 && /^---$/) {
+          $_ = "---\n# Managed by resources-generative-ai";
+        }
+        s{^model:\s*claude-opus-5\[effort=high\]\s*$}{model: opus\neffort: high};
+        s{^model:\s*gpt-5\.6-sol-max\s*$}{model: sonnet\neffort: high};
+        s{^readonly:\s*true\s*$}{tools: Read, Grep, Glob};
+        s{\~/\.cursor/skills/}{'"$skill_path_replace"'}g;
+        $_ .= "\n";
+      ' "$src" > "$tmpfile"
+    else
+      perl -pe '
+        s{\r?\n$}{};
+        if ($. == 1 && /^---$/) {
+          $_ = "---\n# Managed by resources-generative-ai";
+        }
+        s{\~/\.cursor/skills/}{'"$skill_path_replace"'}g;
+        $_ .= "\n";
+      ' "$src" > "$tmpfile"
+    fi
+
+    mv -f "$tmpfile" "$dest"
+    tmpfile=""
+    echo "  [COMPILED] $name -> $dest"
+  done
+  echo
+}
+
+# 1. Cursor (Canonical Symlinks)
+if [[ -z "$FILTER_CLIENT" || "$FILTER_CLIENT" == "cursor" ]]; then
+  CURSOR_TARGET="${CURSOR_AGENTS_DIR:-${HOME}/.cursor/agents}"
+  sync_canonical_links "$CURSOR_TARGET" "Cursor" "${HOME}/.cursor"
+fi
+
+# 2. Claude Code (Compiled frontmatter & allowlist)
+if [[ -z "$FILTER_CLIENT" || "$FILTER_CLIENT" == "claude" ]]; then
+  CLAUDE_TARGET="${CLAUDE_AGENTS_DIR:-${HOME}/.claude/agents}"
+  sync_compiled_agents "$CLAUDE_TARGET" "Claude Code" "${HOME}/.claude" "~/.claude/skills/" 1
+fi
+
+# 3. OpenAI Codex (Compiled with Codex skill paths)
+if [[ -z "$FILTER_CLIENT" || "$FILTER_CLIENT" == "codex" ]]; then
+  CODEX_TARGET="${CODEX_AGENTS_DIR:-${HOME}/.codex/agents}"
+  sync_compiled_agents "$CODEX_TARGET" "OpenAI Codex" "${HOME}/.codex" "~/.codex/skills/" 0
+fi
+
+# 4. Google Antigravity (Config & IDE agents)
+if [[ -z "$FILTER_CLIENT" || "$FILTER_CLIENT" == "antigravity" || "$FILTER_CLIENT" == "gemini" ]]; then
+  GEMINI_BASE="${HOME}/.gemini"
+  if [[ ! -d "$GEMINI_BASE" && $DO_FORCE -eq 0 ]]; then
+    echo "Target environment: Google Antigravity ($GEMINI_BASE)"
+    echo "  [SKIPPED] Environment not found ($GEMINI_BASE does not exist)"
+    echo
+  else
+    if [[ -d "${GEMINI_BASE}/config" || $DO_FORCE -eq 1 ]]; then
+      sync_compiled_agents "${GEMINI_BASE}/config/agents" "Google Antigravity (config)" "${GEMINI_BASE}/config" "~/.gemini/config/skills/" 0
+    fi
+    if [[ -d "${GEMINI_BASE}/antigravity" || $DO_FORCE -eq 1 ]]; then
+      sync_compiled_agents "${GEMINI_BASE}/antigravity/agents" "Google Antigravity (ide)" "${GEMINI_BASE}/antigravity" "~/.gemini/antigravity/skills/" 0
+    fi
+  fi
+fi
+
+echo "Synchronization complete."
