@@ -1,0 +1,301 @@
+{
+  "schemaVersion": "1.0.0",
+  "updatedAt": "2026-11-07T15:15:00Z",
+  "maintainer": "Alessandro Emerich",
+  "repository": "https://github.com/aleemerich/resources-generative-ai",
+  "license": "MIT",
+  "artifacts": [
+    {
+      "id": "SKILL-STB-001",
+      "name": "to-the-point",
+      "type": "skill",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "stable/skills/to-the-point",
+      "entryFile": "stable/skills/to-the-point/SKILL.md",
+      "sha256": "7b304eb72d7e5735e5ed006757a78122118192e689c9a209d8290e1f7ab15e68",
+      "description": "Shape output for a reader with ADHD: lead with the next action, number multi-step work, restate state across turns, suppress tangents. Invoke with /to-the-point or /direto-ao-ponto.",
+      "compatibility": [
+        "claude-code",
+        "cursor",
+        "codex",
+        "antigravity"
+      ]
+    },
+    {
+      "id": "SKILL-STB-002",
+      "name": "factual-writer",
+      "type": "skill",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "stable/skills/factual-writer",
+      "entryFile": "stable/skills/factual-writer/SKILL.md",
+      "sha256": "9935d6463cd6edf4924079bfa89e93b384015e36344c14ca04fa4a44961b8cf2",
+      "description": "Mandatory voice for factual, concise prose. Zero adjectives, no em-dashes, no fluff, data precision, and peel-the-onion narrative. Supports write and review modes.",
+      "compatibility": [
+        "claude-code",
+        "cursor",
+        "codex",
+        "antigravity"
+      ]
+    },
+    {
+      "id": "SKILL-STB-003",
+      "name": "communication-style",
+      "type": "skill",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "stable/skills/communication-style",
+      "entryFile": "stable/skills/communication-style/SKILL.md",
+      "sha256": "18764de36c86cd5f36a5abb7024b098dbd29ffe7922ce420abd6a617579e4eaa",
+      "description": "Natural Brazilian Portuguese communication style: active voice, direct answers, and elimination of generic AI-filler phrases.",
+      "language": "pt-BR",
+      "compatibility": [
+        "claude-code",
+        "cursor",
+        "codex",
+        "antigravity"
+      ]
+    },
+    {
+      "id": "SKILL-STB-004",
+      "name": "technical-explanation-style",
+      "type": "skill",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "stable/skills/technical-explanation-style",
+      "entryFile": "stable/skills/technical-explanation-style/SKILL.md",
+      "sha256": "ed2b3a7a2088f5ea1a8a8a9ea314ae1e69ba64b102be4f7285c4353c8c41805d",
+      "description": "Seven rules and two review passes (conceptual + mechanical) for explaining code to developers without repositories open.",
+      "language": "pt-BR",
+      "compatibility": [
+        "claude-code",
+        "cursor",
+        "codex",
+        "antigravity"
+      ]
+    },
+    {
+      "id": "SKILL-STB-005",
+      "name": "post-change-cleanup-review",
+      "type": "skill",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "stable/skills/post-change-cleanup-review",
+      "entryFile": "stable/skills/post-change-cleanup-review/SKILL.md",
+      "sha256": "6dfa576b4ae070acc1a4f54a5bc2baca1f8fdcb4fc77d89209cbb9931d858540",
+      "description": "Structured post-modification review checklist targeting dead code, duplicate blocks, naming ambiguities, and test drift.",
+      "compatibility": [
+        "claude-code",
+        "cursor",
+        "codex",
+        "antigravity"
+      ]
+    },
+    {
+      "id": "SKILL-STB-006",
+      "name": "post-change-tests-review",
+      "type": "skill",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "stable/skills/post-change-tests-review",
+      "entryFile": "stable/skills/post-change-tests-review/SKILL.md",
+      "sha256": "a09fad8092bb4e932beaf9ac68861d72f4f53cfd4cddeb8dfc68de115c60b506",
+      "description": "Systematically assesses test relevance, duplicates, compatibility issues, and missing test scenarios following code edits.",
+      "compatibility": [
+        "claude-code",
+        "cursor",
+        "codex",
+        "antigravity"
+      ]
+    },
+    {
+      "id": "SKILL-STB-007",
+      "name": "project-context-file",
+      "type": "skill",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "stable/skills/project-context-file",
+      "entryFile": "stable/skills/project-context-file/SKILL.md",
+      "sha256": "a0c382a5d504d1d831aa85f24d266d7c823d8b6b54acb4373be5885b6889e8e3",
+      "description": "Creates and maintains minimal AGENTS.md context files (<150 lines) adhering to the Toolchain First and Judgment Boundaries principles.",
+      "compatibility": [
+        "claude-code",
+        "cursor",
+        "codex",
+        "antigravity"
+      ]
+    },
+    {
+      "id": "SKILL-STB-008",
+      "name": "taskforce",
+      "type": "skill",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "stable/skills/taskforce",
+      "entryFile": "stable/skills/taskforce/SKILL.md",
+      "sha256": "766916fd87ac04a29ef091a34fe49d6d25fb832551e9d9ea775e85098fff3747",
+      "description": "Orchestrates an autonomous engineering task force (analyst, architect, implementer, reviewer, release-manager) with TDD and independent reviews.",
+      "compatibility": [
+        "claude-code",
+        "cursor",
+        "codex",
+        "antigravity"
+      ]
+    },
+    {
+      "id": "TOOL-STB-001",
+      "name": "sync-skills",
+      "type": "tool",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "tools/sync-skills.sh",
+      "entryFile": "tools/sync-skills.sh",
+      "sha256": "90b89e30f14da139b3abfa2d251761e086f6879a592c4d8da4e9e28e57ea395b",
+      "description": "Idempotent multi-platform symlink synchronization script for Claude Code, Cursor, Codex, and Antigravity.",
+      "compatibility": [
+        "bash",
+        "posix"
+      ]
+    },
+    {
+      "id": "TOOL-STB-002",
+      "name": "build-agents",
+      "type": "tool",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "tools/build-agents.sh",
+      "entryFile": "tools/build-agents.sh",
+      "sha256": "02a4a11e51e1fabcbbbf2ee4d0ca113accc377a476bed11fa4fb220c2120a1dc",
+      "description": "Compiler translating canonical Cursor agent frontmatter definitions to Claude Code subagent manifests with tool allowlists.",
+      "compatibility": [
+        "bash",
+        "posix"
+      ]
+    },
+    {
+      "id": "TOOL-STB-003",
+      "name": "validate-catalog",
+      "type": "tool",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "tools/validate-catalog.js",
+      "entryFile": "tools/validate-catalog.js",
+      "sha256": "c38c99f7f4197aa2a6a296da468f090d6a9023d7e564aea4dd4f468b511cd892",
+      "description": "Automated verification suite validating Agent Skills specification compliance, frontmatter format, and secret/DLP scan.",
+      "compatibility": [
+        "node"
+      ]
+    },
+    {
+      "id": "TOOL-STB-004",
+      "name": "sync-skills-ps1",
+      "type": "tool",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "tools/sync-skills.ps1",
+      "entryFile": "tools/sync-skills.ps1",
+      "sha256": "8192f8c3497aabc2800cc37c264fcdad4bc8ff787dc3fbb560e15fcf5b9120f4",
+      "description": "Windows PowerShell multi-platform synchronization script using symbolic links or junctions.",
+      "compatibility": [
+        "powershell",
+        "windows"
+      ]
+    },
+    {
+      "id": "TOOL-STB-005",
+      "name": "build-agents-ps1",
+      "type": "tool",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "tools/build-agents.ps1",
+      "entryFile": "tools/build-agents.ps1",
+      "sha256": "8dc1d35672bb2d6c2a731764249d241ac5d128e804a445e2b06eb7faf27463c0",
+      "description": "Windows PowerShell compiler translating canonical agent definitions for Cursor and Claude Code.",
+      "compatibility": [
+        "powershell",
+        "windows"
+      ]
+    },
+    {
+      "id": "AGENT-STB-001",
+      "name": "analyst",
+      "type": "agent",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "stable/agents/analyst.md",
+      "entryFile": "stable/agents/analyst.md",
+      "sha256": "77f152642678bec23d8528a299bb1bef44a1235db1391112727d8e33c5657f06",
+      "description": "Business analyst subagent: frames problems, gathers requirements, and produces decision documents.",
+      "compatibility": [
+        "cursor",
+        "claude-code",
+        "antigravity"
+      ]
+    },
+    {
+      "id": "AGENT-STB-002",
+      "name": "architect",
+      "type": "agent",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "stable/agents/architect.md",
+      "entryFile": "stable/agents/architect.md",
+      "sha256": "3590e1983014c0ee4d570c5e3dd02bbc7bd358d8080e9d849cbdc51a639771b4",
+      "description": "System architect subagent: decides layer placement, technical trade-offs, schemas, and prescriptive implementation plans.",
+      "compatibility": [
+        "cursor",
+        "claude-code",
+        "antigravity"
+      ]
+    },
+    {
+      "id": "AGENT-STB-003",
+      "name": "implementer",
+      "type": "agent",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "stable/agents/implementer.md",
+      "entryFile": "stable/agents/implementer.md",
+      "sha256": "e6de63312b757e9efd1b46184a0fb3c65b803cce0904331acec3649420553ee0",
+      "description": "TDD implementer subagent: writes production code and tests together, executes plans, and records trace logs.",
+      "compatibility": [
+        "cursor",
+        "claude-code",
+        "antigravity"
+      ]
+    },
+    {
+      "id": "AGENT-STB-004",
+      "name": "reviewer",
+      "type": "agent",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "stable/agents/reviewer.md",
+      "entryFile": "stable/agents/reviewer.md",
+      "sha256": "9a4e78080579d75df2e9b6b6458b2ce9287c8eb8c4b584dcf16a4105ba76b335",
+      "description": "Read-only reviewer subagent: evaluates code and test quality independently across blocking, non-blocking, and nitpick severities.",
+      "compatibility": [
+        "cursor",
+        "claude-code",
+        "antigravity"
+      ]
+    },
+    {
+      "id": "AGENT-STB-005",
+      "name": "release-manager",
+      "type": "agent",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "stable/agents/release-manager.md",
+      "entryFile": "stable/agents/release-manager.md",
+      "sha256": "e3cd3a510c2737a25f711271ea5e3725f262e0a9f71e6aa5410c14508e3f581b",
+      "description": "Release manager subagent: audits completed work, drafts pull requests, and publishes via GitHub CLI after explicit user approval.",
+      "compatibility": [
+        "cursor",
+        "claude-code",
+        "antigravity"
+      ]
+    }
+  ]
+}

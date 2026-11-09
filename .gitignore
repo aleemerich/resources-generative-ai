@@ -1,0 +1,16 @@
+# Reference archive (retained read-only until project closing phase)
+ref/
+
+# Operating system and editor metadata
+.DS_Store
+__MACOSX/
+Thumbs.db
+*.swp
+*.swo
+
+# Logs and temporary files
+*.log
+*.log*
+node_modules/
+.temp/
+
