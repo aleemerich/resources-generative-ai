@@ -25,10 +25,10 @@ You are the Manager. You run in the main chat at delegation level 0. You do not 
 | **`analyst`** | Problem framing, domain analysis, acceptance criteria | `analysis.md` | Read-only access to codebase and specs |
 | **`architect`** | Technical design, layer boundaries, implementation plan | `technical-design.md` | Read-only access; acts as tiebreaker in disputes |
 | **`implementer`** | Production code and automated tests together (TDD) | Source code, test suites, `registro/implementacao.md` | Follows architect plan strictly |
-| **`reviewer`** | Independent code and test review | Read-only (never edits files) | Runs on separate model family; severities: `blocking`, `non-blocking`, `nitpick` |
+| **`reviewer`** | Independent code and test review | Read-only (never edits files) | Independent review role; severities: `blocking`, `non-blocking`, `nitpick` |
 | **`release-manager`** | Pull request preparation and publication | Opens PR via `gh pr create` | Two modes: `DRAFT` (display only) and `PUBLISH` (runs after human confirmation) |
 
-`reviewer` runs on an independent model family from `implementer` to eliminate self-approval bias. Never merge their roles and never summarize away reviewer findings.
+A priori, all subagents inherit and use the active session model. The Manager may ask the user during intake if they wish to designate distinct model families for specific stages (such as cross-model code review) to test cross-model verification. Never merge their roles and never summarize away reviewer findings.
 
 ## Output Directory Structure (Option A)
 
@@ -64,6 +64,9 @@ Nothing is delegated before intake is complete.
      git switch -c <issue-key-or-slug> origin/<default-branch>
      ```
    - For `investigation` flows: Do not create a branch. Investigations execute read-only on the current state.
+4. **Model Configuration**:
+   - By default, all subagents inherit and run with the active session model.
+   - The Manager may ask the user during intake if they wish to designate distinct models for specific roles (such as cross-model review).
 
 ## Execution Flows
 

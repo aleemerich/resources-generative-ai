@@ -1,7 +1,6 @@
 ---
 name: reviewer
 description: Independent, read-only reviewer of code and automated tests. Evaluates implementation quality, correctness, layer separation, and test intent. Categorizes findings by severity. Use after implementer changes code, before any commit.
-model: gpt-5.6-sol-max
 readonly: true
 ---
 

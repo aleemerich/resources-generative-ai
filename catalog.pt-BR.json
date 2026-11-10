@@ -134,7 +134,7 @@
       "version": "1.0.0",
       "path": "stable/skills/taskforce",
       "entryFile": "stable/skills/taskforce/SKILL.md",
-      "sha256": "766916fd87ac04a29ef091a34fe49d6d25fb832551e9d9ea775e85098fff3747",
+      "sha256": "ba8e7e81b064bc36a86dd1d18988effe8322bba5d8d9116854925d02e1725f97",
       "description": "Orquestra uma força-tarefa de engenharia de software autônoma (analyst, architect, implementer, reviewer, release-manager) com TDD e revisões independentes.",
       "compatibility": [
         "claude-code",
@@ -166,7 +166,7 @@
       "version": "1.0.0",
       "path": "tools/build-agents.sh",
       "entryFile": "tools/build-agents.sh",
-      "sha256": "a48981e72e479fd0169a6815ec8b26260e8f8a694028157fc1b80c5bcc60515d",
+      "sha256": "454ea28fba187e304fa12f9a6eb54245095caea0230807734812e425f0478aba",
       "description": "Sincroniza e compila subagentes canônicos para Cursor, Claude Code, OpenAI Codex e Google Antigravity.",
       "compatibility": [
         "bash",
@@ -210,7 +210,7 @@
       "version": "1.0.0",
       "path": "tools/build-agents.ps1",
       "entryFile": "tools/build-agents.ps1",
-      "sha256": "60b40aefd7c33d6dd56c3ecb1aad266fe2736dd381c1f9759bfdd92cf11e98dc",
+      "sha256": "eb6f77a5c46770419ff9b507ccebf39f49951b8df22f863a7efb1ef12ccb62fa",
       "description": "Script em Windows PowerShell para sincronizar e compilar subagentes para Cursor, Claude Code, OpenAI Codex e Google Antigravity.",
       "compatibility": [
         "powershell",
@@ -225,7 +225,7 @@
       "version": "1.0.0",
       "path": "stable/agents/analyst.md",
       "entryFile": "stable/agents/analyst.md",
-      "sha256": "77f152642678bec23d8528a299bb1bef44a1235db1391112727d8e33c5657f06",
+      "sha256": "6b3596250684aa7559c3c5a7ff00264d355d8a8c2e2060b11eaf5e036ee3da1a",
       "description": "Subagente analista de negócio: mapeia problemas, levanta requisitos e produz documentos de decisão técnica.",
       "compatibility": [
         "cursor",
@@ -241,7 +241,7 @@
       "version": "1.0.0",
       "path": "stable/agents/architect.md",
       "entryFile": "stable/agents/architect.md",
-      "sha256": "3590e1983014c0ee4d570c5e3dd02bbc7bd358d8080e9d849cbdc51a639771b4",
+      "sha256": "e978791613617f30326863e8634b2e6cbc78fe75a9691709dfde8b27d598933b",
       "description": "Subagente arquiteto de sistemas: define camadas arquiteturais, trade-offs técnicos, contratos de dados e planos prescritivos de implementação.",
       "compatibility": [
         "cursor",
@@ -257,7 +257,7 @@
       "version": "1.0.0",
       "path": "stable/agents/implementer.md",
       "entryFile": "stable/agents/implementer.md",
-      "sha256": "e6de63312b757e9efd1b46184a0fb3c65b803cce0904331acec3649420553ee0",
+      "sha256": "6306a0ec62ecd6a2d401cfb091924df5661c6d0bfa0777f68520348c14445e14",
       "description": "Subagente implementador TDD: escreve código de produção e testes automatizados em conjunto, executa planos e mantém histórico de implementação.",
       "compatibility": [
         "cursor",
@@ -273,7 +273,7 @@
       "version": "1.0.0",
       "path": "stable/agents/reviewer.md",
       "entryFile": "stable/agents/reviewer.md",
-      "sha256": "9a4e78080579d75df2e9b6b6458b2ce9287c8eb8c4b584dcf16a4105ba76b335",
+      "sha256": "81411afce6e02d32517f5728fa9147bd9f671e9b064cdc07160c4c8818e353f4",
       "description": "Subagente revisor somente leitura: avalia código e testes de forma independente por severidade (bloqueante, não-bloqueante e nitpick).",
       "compatibility": [
         "cursor",
@@ -289,7 +289,7 @@
       "version": "1.0.0",
       "path": "stable/agents/release-manager.md",
       "entryFile": "stable/agents/release-manager.md",
-      "sha256": "e3cd3a510c2737a25f711271ea5e3725f262e0a9f71e6aa5410c14508e3f581b",
+      "sha256": "ed10073d644dfa4720e6b5f82936287a505a698598853d88dabb6e884567034f",
       "description": "Subagente gerente de release: audita entregáveis concluídos, redige pull requests e publica via GitHub CLI após aprovação humana explícita.",
       "compatibility": [
         "cursor",

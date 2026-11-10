@@ -5,6 +5,7 @@
 .DESCRIPTION
   Inspects client discovery paths. If a client environment exists, synchronizes
   all subagents; otherwise, reports as skipped and continues to the next client.
+  Subagents inherit the active session model by default across all clients.
 .PARAMETER Force
   Overwrite existing regular files or unmanaged agent files at destination.
 .PARAMETER Client
@@ -165,8 +166,6 @@ function Sync-CompiledAgents {
     $content = $content.Replace("`r`n", "`n")
 
     if ($IsClaude) {
-      $content = [regex]::Replace($content, "(?m)^model:\s*claude-opus-5\[effort=high\]\s*$", "model: opus`neffort: high")
-      $content = [regex]::Replace($content, "(?m)^model:\s*gpt-5\.6-sol-max\s*$", "model: sonnet`neffort: high")
       $content = [regex]::Replace($content, "(?m)^readonly:\s*true\s*$", "tools: Read, Grep, Glob")
     }
 

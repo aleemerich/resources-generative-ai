@@ -5,9 +5,8 @@
 # Inspects client discovery paths. If a client environment exists, synchronizes
 # all subagents; otherwise, reports as skipped and continues to the next client.
 #
+# Subagents inherit the active session model by default across all clients.
 # Field mapping applied for Claude Code:
-#   model: claude-opus-5[effort=high]  ->  model: opus   + effort: high
-#   model: gpt-5.6-sol-max             ->  model: sonnet + effort: high
 #   readonly: true                     ->  tools: Read, Grep, Glob
 #
 # Claude Code freezes its agent registry at boot. After compiling, restart Claude Code.
@@ -157,8 +156,6 @@ sync_compiled_agents() {
         if ($. == 1 && /^---$/) {
           $_ = "---\n# Managed by resources-generative-ai";
         }
-        s{^model:\s*claude-opus-5\[effort=high\]\s*$}{model: opus\neffort: high};
-        s{^model:\s*gpt-5\.6-sol-max\s*$}{model: sonnet\neffort: high};
         s{^readonly:\s*true\s*$}{tools: Read, Grep, Glob};
         s{\~/\.cursor/skills/}{'"$skill_path_replace"'}g;
         $_ .= "\n";
