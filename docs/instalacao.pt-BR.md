@@ -113,6 +113,43 @@ Por favor, execute as seguintes etapas:
 npx skills add aleemerich/resources-generative-ai --skill to-the-point
 ```
 
+### Método D: Marketplace de Plugins do Claude
+
+O repositório também é um marketplace de plugins do Claude. O arquivo `.claude-plugin/marketplace.json` declara o marketplace `aleemerich-genai-resources` com um plugin, `genai-resources`, cuja origem é `./stable`. Todas as skills e subagentes estáveis vão nele, e um novo artefato estável entra sem editar o arquivo do marketplace. `experimental/` e `deprecated/` nunca são publicados; o `tools/validate-catalog.js` falha se a origem de um plugin apontar para fora de `stable/`.
+
+**Chat, Cowork e Claude Desktop** (planos pagos):
+1. Abra **Customize → Plugins → Add → Add marketplace**.
+2. Informe `aleemerich/resources-generative-ai`.
+3. Instale **genai-resources**.
+
+A instalação fica na sua conta do claude.ai. O Claude Code a recebe como plugin sincronizado no início da próxima sessão (Claude Code v2.1.273 ou superior).
+
+**Somente Claude Code (CLI):**
+```bash
+claude plugin marketplace add aleemerich/resources-generative-ai
+claude plugin install genai-resources@aleemerich-genai-resources
+```
+
+**O que carrega em cada ambiente:**
+
+| Componente | Chat | Cowork | Claude Code |
+| :--- | :--- | :--- | :--- |
+| Skills (`stable/skills/`) | Sim | Sim | Sim |
+| Subagentes (`stable/agents/`) | Ignorados | Sim | Sim |
+
+**Nomes:** componentes de plugin recebem prefixo. As skills aparecem como `/genai-resources:<skill>` e os subagentes como `genai-resources:<agente>`. A skill `taskforce` delega para o nome do time que estiver disponível.
+
+**Evite duplicatas:** não combine este método com o Método A para o Claude. Com o plugin instalado, remova os links e os agentes gerados pelo Método A no Claude:
+```bash
+./tools/sync-skills.sh --clean --client claude
+rm -i ~/.claude/agents/{analyst,architect,implementer,reviewer,release-manager}.md
+```
+Cursor, Codex e Antigravity continuam usando o Método A.
+
+**Atualizações:** o plugin não declara `version`, então as instalações acompanham os commits da `main`. No Claude Code, rode `claude plugin marketplace update aleemerich-genai-resources` ou ative a atualização automática do marketplace em `/plugin` → **Marketplaces**.
+
+**Mantenedores:** rode `claude plugin validate .` e `node tools/validate-catalog.js` depois de alterar `.claude-plugin/marketplace.json`.
+
 ---
 
 ## 4. Verificação da Instalação

@@ -55,6 +55,7 @@ Artifacts are categorized into lifecycle stages across all AI resource types (`s
 | **[`post-change-tests-review`](./stable/skills/post-change-tests-review/)** | Quality Assurance | Systematically assesses test relevance, duplicates, compatibility issues, and missing test scenarios following code edits. | Test suite maintenance, TDD loops |
 | **[`project-context-file`](./stable/skills/project-context-file/)** | Tooling / Onboarding | Creates and maintains minimal `AGENTS.md` context files (<150 lines) adhering to the "Toolchain First" and "Judgment Boundaries" principles. | `AGENTS.md` generation, AI onboarding |
 | **[`taskforce`](./stable/skills/taskforce/)** | Multi-Agent Orchestration | Orchestrates an autonomous software engineering team (analyst, architect, implementer, reviewer, release-manager) with TDD and independent reviews. | `/taskforce`, features, refactors, investigations |
+| **[`algorithmic-art`](./stable/skills/algorithmic-art/)** | Creative / Generative Art | Generative art with p5.js: seeded randomness, flow fields and particle systems, delivered as an interactive HTML viewer. Imported from [anthropics/skills](https://github.com/anthropics/skills) (Apache-2.0). | generative art, flow fields, particle systems |
 
 ---
 
@@ -96,6 +97,19 @@ Copy and paste this prompt to your AI coding assistant (Claude Code, Cursor, Cod
 >    - On Linux / macOS / Git Bash: run `./tools/sync-skills.sh` (and `./tools/build-agents.sh` for subagents).
 >    - If in a restricted environment without shell access, read `catalog.json` and download each skill file from `https://raw.githubusercontent.com/aleemerich/resources-generative-ai/main/<entryFile>` into my environment's discovery directory.
 > 4. Report which skills and agents were installed, their versions from `catalog.json`, and whether a session reload is needed."
+
+### Option 3: Install as a Claude Plugin (Chat, Cowork and Claude Code)
+
+Use this option to get the skills in **Claude Chat and Cowork**, which do not read local skill folders. The repository ships a plugin marketplace in `.claude-plugin/marketplace.json` with one plugin, `genai-resources`, that loads every artifact in `stable/`.
+
+- **Claude Chat, Cowork or Claude Desktop:** open **Customize → Plugins → Add → Add marketplace**, enter `aleemerich/resources-generative-ai`, then install **genai-resources**. The plugin is attached to your account and also reaches Claude Code as a synced plugin.
+- **Claude Code only:**
+  ```bash
+  claude plugin marketplace add aleemerich/resources-generative-ai
+  claude plugin install genai-resources@aleemerich-genai-resources
+  ```
+
+Skills load on every surface. Subagents load in Cowork and Claude Code only; Chat ignores them. Plugin components are namespaced, so skills appear as `/genai-resources:<skill>` and subagents as `genai-resources:<agent>`. Pick one channel for Claude: if you install the plugin, remove the Claude links created by Option 1 (`./tools/sync-skills.sh --clean --client claude`) to avoid duplicate skills. See the **[Installation Guide](./docs/installation.md#method-d-claude-plugin-marketplace)** for details.
 
 For detailed manual instructions and platform-specific discovery paths, see the **[Installation Guide](./docs/installation.md)**.
 

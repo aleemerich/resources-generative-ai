@@ -131,11 +131,28 @@
       "name": "taskforce",
       "type": "skill",
       "status": "stable",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "stable/skills/taskforce",
       "entryFile": "stable/skills/taskforce/SKILL.md",
-      "sha256": "ba8e7e81b064bc36a86dd1d18988effe8322bba5d8d9116854925d02e1725f97",
+      "sha256": "8fcd4f6939e6f78d773fd2a759b8d5a0cb68aef82d6cc03f3263fad84ae0ab69",
       "description": "Orchestrates an autonomous engineering task force (analyst, architect, implementer, reviewer, release-manager) with TDD and independent reviews.",
+      "compatibility": [
+        "claude-code",
+        "cursor",
+        "codex",
+        "antigravity"
+      ]
+    },
+    {
+      "id": "SKILL-STB-009",
+      "name": "algorithmic-art",
+      "type": "skill",
+      "status": "stable",
+      "version": "1.0.0",
+      "path": "stable/skills/algorithmic-art",
+      "entryFile": "stable/skills/algorithmic-art/SKILL.md",
+      "sha256": "6a89bef6feefd99f67175f5744be7964056e00d6d0fc7d06bc3cc4b03cb6d04c",
+      "description": "Generative art with p5.js: seeded randomness, flow fields and particle systems, delivered as an interactive HTML viewer. Imported from anthropics/skills (Apache-2.0).",
       "compatibility": [
         "claude-code",
         "cursor",
@@ -178,10 +195,10 @@
       "name": "validate-catalog",
       "type": "tool",
       "status": "stable",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "path": "tools/validate-catalog.js",
       "entryFile": "tools/validate-catalog.js",
-      "sha256": "c38c99f7f4197aa2a6a296da468f090d6a9023d7e564aea4dd4f468b511cd892",
+      "sha256": "7ee3ffa924c551aa84d1c11ea97e05d11a903813b337081c88449319bc2b645d",
       "description": "Automated verification suite validating Agent Skills specification compliance, frontmatter format, and secret/DLP scan.",
       "compatibility": [
         "node"

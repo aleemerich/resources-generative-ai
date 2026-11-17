@@ -28,6 +28,8 @@ You are the Manager. You run in the main chat at delegation level 0. You do not 
 | **`reviewer`** | Independent code and test review | Read-only (never edits files) | Independent review role; severities: `blocking`, `non-blocking`, `nitpick` |
 | **`release-manager`** | Pull request preparation and publication | Opens PR via `gh pr create` | Two modes: `DRAFT` (display only) and `PUBLISH` (runs after human confirmation) |
 
+When the roster is installed as a plugin, each subagent name carries the plugin prefix (for example `genai-resources:analyst`). Delegate using the exact name shown in your available subagent list; if both a bare and a prefixed name exist, either works.
+
 A priori, all subagents inherit and use the active session model. The Manager may ask the user during intake if they wish to designate distinct model families for specific stages (such as cross-model code review) to test cross-model verification. Never merge their roles and never summarize away reviewer findings.
 
 ## Output Directory Structure (Option A)

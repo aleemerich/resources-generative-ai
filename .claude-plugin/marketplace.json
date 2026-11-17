@@ -1,0 +1,20 @@
+{
+  "name": "aleemerich-genai-resources",
+  "description": "Stable Agent Skills and subagents from resources-generative-ai, packaged as a plugin for Claude (Chat, Cowork and Claude Code).",
+  "owner": {
+    "name": "Alessandro Emerich",
+    "url": "https://github.com/aleemerich"
+  },
+  "plugins": [
+    {
+      "name": "genai-resources",
+      "displayName": "Generative AI Resources",
+      "description": "Every stable skill and subagent in the repository: writing voice, code explanation, AGENTS.md authoring, post-change reviews, generative art and the multi-agent engineering task force. Skills load in Chat, Cowork and Claude Code; subagents load in Cowork and Claude Code only.",
+      "source": "./stable",
+      "license": "MIT",
+      "homepage": "https://github.com/aleemerich/resources-generative-ai",
+      "repository": "https://github.com/aleemerich/resources-generative-ai",
+      "keywords": ["skills", "subagents", "writing", "code-review", "multi-agent", "pt-br"]
+    }
+  ]
+}

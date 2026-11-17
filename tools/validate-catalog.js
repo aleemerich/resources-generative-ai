@@ -16,6 +16,8 @@ const CATALOG_PT_PATH = path.join(REPO_ROOT, 'catalog.pt-BR.json');
 const STABLE_SKILLS_DIR = path.join(REPO_ROOT, 'stable', 'skills');
 const STABLE_AGENTS_DIR = path.join(REPO_ROOT, 'stable', 'agents');
 const TOOLS_DIR = path.join(REPO_ROOT, 'tools');
+const MARKETPLACE_PATH = path.join(REPO_ROOT, '.claude-plugin', 'marketplace.json');
+const RESERVED_PLUGIN_NAME_RE = /^(?:claude|anthropic|anthropics|cc-plugin)-/;
 
 const KEBAB_CASE_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -600,6 +602,74 @@ function validateCatalogFile(catalogPath, catalogLabel, discoveredSkills, discov
   logOk(`${catalogLabel} validated: ${catalog.artifacts.length} artifacts verified with checksums and boundary checks.`);
 }
 
+/**
+ * Validates the optional plugin marketplace (.claude-plugin/marketplace.json).
+ * Each plugin entry must be a relative path inside stable/, so experimental and
+ * deprecated artifacts are never published through the plugin channel.
+ */
+function validateMarketplace() {
+  console.log('\n--- Validating plugin marketplace (.claude-plugin/marketplace.json) ---');
+  if (!fs.existsSync(MARKETPLACE_PATH)) {
+    logOk('No marketplace file found; plugin distribution is disabled.');
+    return;
+  }
+
+  let marketplace;
+  try {
+    marketplace = JSON.parse(fs.readFileSync(MARKETPLACE_PATH, 'utf8'));
+  } catch (err) {
+    logError(`marketplace.json is not valid JSON: ${err.message}`);
+    return;
+  }
+
+  if (!marketplace.name || !KEBAB_CASE_RE.test(marketplace.name)) {
+    logError(`marketplace.json: "name" must be kebab-case (found "${marketplace.name}")`);
+  }
+  if (!marketplace.owner || !marketplace.owner.name) {
+    logError('marketplace.json: "owner.name" is required');
+  }
+  if (!Array.isArray(marketplace.plugins) || marketplace.plugins.length === 0) {
+    logError('marketplace.json: "plugins" must be a non-empty array');
+    return;
+  }
+
+  const stableRoot = path.join(REPO_ROOT, 'stable');
+  const seen = new Set();
+  for (const entry of marketplace.plugins) {
+    const label = `marketplace plugin "${entry.name}"`;
+    if (!entry.name || !KEBAB_CASE_RE.test(entry.name)) {
+      logError(`${label}: name must be kebab-case`);
+      continue;
+    }
+    if (RESERVED_PLUGIN_NAME_RE.test(entry.name)) {
+      logError(`${label}: names starting with claude-, anthropic- or cc-plugin- are reserved`);
+    }
+    if (seen.has(entry.name)) {
+      logError(`${label}: duplicate plugin name`);
+    }
+    seen.add(entry.name);
+
+    if (typeof entry.source !== 'string' || !entry.source.startsWith('./') || entry.source.includes('..')) {
+      logError(`${label}: source must be a relative path starting with "./" and without ".."`);
+      continue;
+    }
+    const sourceDir = path.resolve(REPO_ROOT, entry.source);
+    if (sourceDir !== stableRoot && !sourceDir.startsWith(stableRoot + path.sep)) {
+      logError(`${label}: source must point inside stable/ (found ${entry.source})`);
+      continue;
+    }
+    if (!fs.existsSync(sourceDir) || !fs.statSync(sourceDir).isDirectory()) {
+      logError(`${label}: source directory not found (${entry.source})`);
+      continue;
+    }
+    if (fs.existsSync(path.join(sourceDir, 'bin'))) {
+      logError(`${label}: a top-level bin/ directory blocks installation in Chat and Cowork`);
+      continue;
+    }
+    logOk(`${label} points to ${entry.source}`);
+  }
+}
+
 function run() {
   console.log('Starting validation suite for resources-generative-ai...');
   scanRepositoryDlp();
@@ -608,6 +678,7 @@ function run() {
   const tools = validateTools();
   validateCatalogFile(CATALOG_EN_PATH, 'catalog.json (EN)', skills, agents, tools);
   validateCatalogFile(CATALOG_PT_PATH, 'catalog.pt-BR.json (PT-BR)', skills, agents, tools);
+  validateMarketplace();
 
   console.log('\n======================================');
   if (errors > 0) {

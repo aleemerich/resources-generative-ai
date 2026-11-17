@@ -113,6 +113,43 @@ Please perform the following steps:
 npx skills add aleemerich/resources-generative-ai --skill to-the-point
 ```
 
+### Method D: Claude Plugin Marketplace
+
+The repository is also a Claude plugin marketplace. `.claude-plugin/marketplace.json` declares the marketplace `aleemerich-genai-resources` with one plugin, `genai-resources`, whose source is `./stable`. Every stable skill and subagent ships in it, and a new stable artifact is included without editing the marketplace file. `experimental/` and `deprecated/` are never published; `tools/validate-catalog.js` fails if a plugin source points outside `stable/`.
+
+**Claude Chat, Cowork and Claude Desktop** (paid plans):
+1. Open **Customize → Plugins → Add → Add marketplace**.
+2. Enter `aleemerich/resources-generative-ai`.
+3. Install **genai-resources**.
+
+The install is attached to your claude.ai account. Claude Code receives it as a synced plugin at its next session start (Claude Code v2.1.273 or later).
+
+**Claude Code CLI only:**
+```bash
+claude plugin marketplace add aleemerich/resources-generative-ai
+claude plugin install genai-resources@aleemerich-genai-resources
+```
+
+**What loads where:**
+
+| Component | Chat | Cowork | Claude Code |
+| :--- | :--- | :--- | :--- |
+| Skills (`stable/skills/`) | Yes | Yes | Yes |
+| Subagents (`stable/agents/`) | Ignored | Yes | Yes |
+
+**Naming:** plugin components are namespaced. Skills appear as `/genai-resources:<skill>` and subagents as `genai-resources:<agent>`. The `taskforce` skill delegates to whichever roster name is available.
+
+**Avoid duplicates:** do not combine this method with Method A for Claude. If the plugin is installed, remove the Claude links and built agents created by Method A:
+```bash
+./tools/sync-skills.sh --clean --client claude
+rm -i ~/.claude/agents/{analyst,architect,implementer,reviewer,release-manager}.md
+```
+Cursor, Codex and Antigravity keep using Method A.
+
+**Updates:** the plugin declares no `version`, so installs track commits on `main`. In Claude Code, run `claude plugin marketplace update aleemerich-genai-resources`, or enable auto-update for the marketplace under `/plugin` → **Marketplaces**.
+
+**Maintainers:** run `claude plugin validate .` and `node tools/validate-catalog.js` after changing `.claude-plugin/marketplace.json`.
+
 ---
 
 ## 4. Verifying Installed Skills and Agents

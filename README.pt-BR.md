@@ -55,6 +55,7 @@ Os artefatos estão organizados por ciclo de vida em todas as categorias de recu
 | **[`post-change-tests-review`](./stable/skills/post-change-tests-review/)** | Testes / QA | Avaliação sistemática de suítes de teste após mudanças de código (tabela de relevância, duplicações, compatibilidade de schemas e lacunas de cobertura). | Manutenção de testes, ciclos TDD |
 | **[`project-context-file`](./stable/skills/project-context-file/)** | Ferramentas / Onboarding | Criação e manutenção do padrão de mercado `AGENTS.md` (<150 linhas) baseado nos princípios *Toolchain First* e *Limites de Julgamento* (NEVER / ASK / ALWAYS). | Geração de `AGENTS.md`, onboarding de agentes |
 | **[`taskforce`](./stable/skills/taskforce/)** | Orquestração Multi-Agente | Orquestra um time de engenharia autônomo (analista, arquiteto, implementador, revisor, release-manager) com TDD e revisões independentes. | `/taskforce`, features, refatorações, investigações |
+| **[`algorithmic-art`](./stable/skills/algorithmic-art/)** | Criativo / Arte Generativa | Arte generativa com p5.js: aleatoriedade com seed, campos de fluxo e sistemas de partículas, entregue como visualizador HTML interativo. Importada de [anthropics/skills](https://github.com/anthropics/skills) (Apache-2.0). | arte generativa, campos de fluxo, sistemas de partículas |
 
 ---
 
@@ -96,6 +97,19 @@ Envie o prompt abaixo para o seu assistente de programação (Claude Code, Curso
 >    - No Linux / macOS / Git Bash: execute `./tools/sync-skills.sh` (e `./tools/build-agents.sh` para subagentes).
 >    - Caso esteja em um ambiente sem terminal, leia `catalog.json` e baixe os arquivos de cada skill diretamente de `https://raw.githubusercontent.com/aleemerich/resources-generative-ai/main/<entryFile>` para a pasta de skills do meu ambiente.
 > 4. Me informe quais skills e agentes foram instalados, suas versões em `catalog.json` e se é necessário reiniciar a sessão."
+
+### Opção 3: Instalação como Plugin do Claude (Chat, Cowork e Claude Code)
+
+Use esta opção para ter as skills no **Chat e no Cowork do Claude**, que não leem pastas locais de skills. O repositório inclui um marketplace de plugins em `.claude-plugin/marketplace.json` com um plugin, `genai-resources`, que carrega todos os artefatos de `stable/`.
+
+- **Chat, Cowork ou Claude Desktop:** abra **Customize → Plugins → Add → Add marketplace**, informe `aleemerich/resources-generative-ai` e instale **genai-resources**. O plugin fica na sua conta e também chega ao Claude Code como plugin sincronizado.
+- **Somente Claude Code:**
+  ```bash
+  claude plugin marketplace add aleemerich/resources-generative-ai
+  claude plugin install genai-resources@aleemerich-genai-resources
+  ```
+
+As skills carregam em todos os ambientes. Os subagentes carregam só no Cowork e no Claude Code; o Chat os ignora. Componentes de plugin recebem prefixo: as skills aparecem como `/genai-resources:<skill>` e os subagentes como `genai-resources:<agente>`. Escolha um canal para o Claude: se instalar o plugin, remova os links do Claude criados pela Opção 1 (`./tools/sync-skills.sh --clean --client claude`) para evitar skills duplicadas. Detalhes no **[Guia de Instalação](./docs/instalacao.pt-BR.md#método-d-marketplace-de-plugins-do-claude)**.
 
 Para instruções detalhadas de configuração manual, veja o **[Guia de Instalação](./docs/instalacao.pt-BR.md)**.
 
